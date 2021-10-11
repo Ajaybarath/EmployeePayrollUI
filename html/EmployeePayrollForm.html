@@ -151,11 +151,20 @@
                 <a href="./home.html" class="resetButton button cancelButton"> Cancel</a>
                 <div class="submit-reset">
                     <button class="button submitButton" id="submitButton" type="submit">Submit</button>
-                    <button class=" resetButton button" type="reset">Reset</button>
+                    <button class="button resetButton" type="reset">Reset</button>
                 </div>
             </div>
         </form>
     </div>
+
+    <script>
+        const salary = document.querySelector('#salary');
+        const output = document.querySelector('.salary-output');
+        output.textContent = salary.value;
+        salary.addEventListener('input', function () {
+            output.textContent = salary.value;
+        })
+    </script>
 
 </body>
 

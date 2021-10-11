@@ -10,22 +10,6 @@ class EmployeePayrllData {
         this.startDate = params[7];
     }
 
-    get name() {
-        return this._name;
-    }
-
-    get salary() {
-        return this._salary;
-    }
-
-    get gender() {
-        return this._gender;
-    }
-
-    get startDate() {
-        return this._startDate;
-    }
-
     set name(name) {
         let namrRegex = RegExp('^[A-Z]{1}[a-z]{3,}$')
         if (namrRegex.test(name))
@@ -33,34 +17,10 @@ class EmployeePayrllData {
         else throw 'Name is Incorect'
     }
 
-    set salary(salary) {
-        let salaryRegex = RegExp('^[1-9]{1}[0-9]{0,}$')
-        if (salaryRegex.test(salary)) {
-            this._salary = salary;
-        }
-        else throw 'salary is Incorect'
-    }
-
-    set gender(gender) {
-        let genderRegex = RegExp('^[M, F]$')
-        if (genderRegex.test(gender)) {
-            this._gender = gender;
-        }
-        else throw 'gender is Incorect'
-    }
-
     set startDate(startDate) {
         this._startDate = startDate;
     }
 
-
-
-    toString() {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        const empDate = this.startDate === undefined ? "undefined" :
-            this.startDate.toLocaleDateString("en-US", options);
-        return "id= " + this.id + ", name= " + this.name + ", salary= " + this.salary + ", gender= " + this.gender + ", startDate= " + empDate;
-    }
 }
 
 

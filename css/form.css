@@ -51,6 +51,7 @@ body {
     justify-content: center;
     align-items: center;
     border: 0px solid green;
+    padding: 20px;
 }
 
 .form {
@@ -74,7 +75,7 @@ body {
 
 
 
-row-content {
+.row-content {
     display: flex;
     flex-direction: row;
     margin-bottom: 10px;
@@ -104,4 +105,21 @@ label {
     border: 1px solid #ccc;
     border-radius: 4px;
     resize: vertical;
+}
+
+.profile-radio-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.profile-radio-content > label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.profile {
+    width: 40px;
+    border-radius: 50%;
+    margin-left: 12px;
 }

@@ -28,6 +28,7 @@
             <div class="row-content">
                 <label for="name" class="label text">Name</label>
                 <input type="text" class="input" id="name" name="name" placeholder="Your name.." required>
+                <error-output class="text-error" for="text"></error-output>
             </div>
             <div class="row-content">
                 <label for="profile" class="label text">Profile image</label>
@@ -66,15 +67,15 @@
             <div class="row-content">
                 <label for="department" class="label text">Department</label>
                 <div>
-                    <input type="checkbox" class="checkbox" id="hr" name="hr" value="hr" required>
+                    <input type="checkbox" class="checkbox" id="hr" name="department" value="hr" required>
                     <label for="hr" class="text">HR</label>
-                    <input type="checkbox" class="checkbox" id="sales" name="sales" value="Sales">
+                    <input type="checkbox" class="checkbox" id="sales" name="department" value="Sales">
                     <label for="sales" class="text">Sales</label>
-                    <input type="checkbox" class="checkbox" id="finance" name="finance" value="Finance">
+                    <input type="checkbox" class="checkbox" id="finance" name="department" value="Finance">
                     <label for="finance" class="text">Finance</label>
-                    <input type="checkbox" class="checkbox" id="engineer" name="engineer" value="Engineer">
+                    <input type="checkbox" class="checkbox" id="engineer" name="department" value="Engineer">
                     <label for="engineer" class="text">Engineer</label>
-                    <input type="checkbox" class="checkbox" id="others" name="others" value="Others">
+                    <input type="checkbox" class="checkbox" id="others" name="department" value="Others">
                     <label for="others" class="text">Others</label>
                 </div>
             </div>
@@ -151,7 +152,7 @@
                 <a href="./home.html" class="resetButton button cancelButton"> Cancel</a>
                 <div class="submit-reset">
                     <button class="button submitButton" id="submitButton" type="submit">Submit</button>
-                    <button class="button resetButton" type="reset">Reset</button>
+                    <button class="button resetButton" type="reset" onclick="resetForm(); return false">Reset</button>
                 </div>
             </div>
         </form>
@@ -164,6 +165,17 @@
         salary.addEventListener('input', function () {
             output.textContent = salary.value;
         })
+
+        const name = document.querySelector('#name');
+        const textError = document.querySelector('.text-error');
+        name.addEventListener('input', function() {
+            let nameRegex = RegExp("[A-Z][a-zA-Z]{2,}")
+            if (nameRegex.test(name.value))
+                textError.textContent = "";
+            else textError.textContent = "Name is incorrect";
+        })
+
+
     </script>
 
     <script src="../js/EmployeeData.js"></script>

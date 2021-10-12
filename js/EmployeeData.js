@@ -18,7 +18,12 @@ class EmployeePayrllData {
     }
 
     set startDate(startDate) {
-        this._startDate = startDate;
+        var today = new Date();
+        const oneMonthBefore = new Date(today.setDate(today.getDate()-30))
+        console.log(oneMonthBefore.toLocaleDateString)
+        today = new Date();
+        if (today < startDate || startDate < oneMonthBefore ) throw "Start date is invalid";
+        else this._startDate = startDate;
     }
 
     set gender(gender) {
@@ -82,15 +87,19 @@ class EmployeePayrllData {
 let employeePayrllDataArr = new Array();
 
 save = () => {
-    try {
-        let employeePayrllData = createEmployeePayroll();
-        createAndUpdateStorage(employeePayrllData);
-    }
-    catch (e) {
-        return;
-    }
+    let department = document.querySelector('input[name=department]:checked');
+    if (department === null)
+        alert("check any department")
+    else {
+        try {
+            let employeePayrllData = createEmployeePayroll();
+            createAndUpdateStorage(employeePayrllData);
+        }
+        catch (e) {
+            return;
+        }
 
-
+    }
 }
 
 const createEmployeePayroll = () => {

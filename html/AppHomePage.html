@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="stylesheet" href="../css/my_home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap"
+        rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee payroll app</title>
 </head>
+
 <body>
 
     <header class="header-content header">
@@ -24,9 +33,43 @@
                 Employee Detail <div class="emp-content"></div>
             </div>
             <a href="../html/EmployeePayrollForm.html" class="add-button">
-            <img src="../assets/icons/add-24px.svg" alt="">Add User</a>
+                <img src="../assets/icons/add-24px.svg" alt="">Add User</a>
         </div>
+
+        <table class="table-main" id="display">
+
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Department</th>
+                <th>Salary</th>
+                <th>Start Date</th>
+                <th>Actions</th>
+            </tr>
+
+            <tr>
+                <td>
+                    <img src="../assets/profile-images/Ellipse -2.png" alt="" class="profile">
+                </td>
+                <td>Ajay Barath</td>
+                <td>Male</td>
+                <td>
+                    <div class="dept-label">HR</div>
+                    <div class="dept-label">Finance</div>
+                </td>
+                <td>3000000</td>
+                <td>1 Nov 2020</td>
+                <td class="action-content">
+                    <img src="../assets/icons/delete-black-18dp.svg" id="1" onclick="remove(this)" alt="delete">
+                    <img src="../assets/icons/create-black-18dp.svg" id="2" onclick="update(this)" alt="delete">
+                </td>
+            </tr>
+        </table>
     </div>
-    
+
+
+
 </body>
+
 </html>

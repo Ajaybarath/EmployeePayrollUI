@@ -79,7 +79,7 @@ body {
 .row-content {
     display: flex;
     flex-direction: row;
-    margin-bottom: 10px;
+    margin-bottom: 40px;
     align-items: center;
     border: 0px solid green;
 }
@@ -118,13 +118,13 @@ label {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    width: 50%;
 }
 
 .profile-radio-content > label {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin: 0px 10px
 }
 
 .profile {
@@ -249,5 +249,6 @@ select {
 error-output {
     font-size: 12px;
     font-style: italic;
-    columns: red;
+    margin-left: 14px;
+    color: red;
 }

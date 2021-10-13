@@ -19,11 +19,15 @@ class EmployeePayrllData {
 
     set startDate(startDate) {
         var today = new Date();
-        const oneMonthBefore = new Date(today.setDate(today.getDate()-30))
+        const oneMonthBefore = new Date(today.setDate(today.getDate() - 30))
         console.log(oneMonthBefore.toLocaleDateString)
         today = new Date();
-        if (today < startDate || startDate < oneMonthBefore ) throw "Start date is invalid";
-        else this._startDate = startDate;
+        if (today < startDate || startDate < oneMonthBefore) throw "Start date is invalid";
+        else {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+
+            this._startDate = startDate.toLocaleDateString("en-US", options);
+        }
     }
 
     set gender(gender) {
@@ -75,10 +79,8 @@ class EmployeePayrllData {
     }
 
     tostring() {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        const empDate = this.startDate === undefined ? "undefined" :
-            this.startDate.toLocaleDateString("en-US", options);
-        return "name= " + this.name + ", salary= " + this.salary + ", gender= " + this.gender + ", department=" + this.department + ", profile=" + this.profile + ", startDate= " + empDate;
+        
+        return "name= " + this.name + ", salary= " + this.salary + ", gender= " + this.gender + ", department=" + this.department + ", profile=" + this.profile + ", startDate= " + this.startDate;
     }
 
 }

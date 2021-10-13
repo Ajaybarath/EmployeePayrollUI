@@ -167,6 +167,7 @@ const resetForm = () => {
     unsetSelectedValues('[name=gender]')
     unsetSelectedValues('[name=department]')
     setValue('#salary', '');
+    setTextContent('.salary-output', '400000');
     setValue('#notes', '');
     setValue('#day', '1');
     setValue('#month', 'January');
@@ -183,4 +184,9 @@ const unsetSelectedValues = (propertyValue) => {
 const setValue = (id, value) => {
     const element = document.querySelector(id);
     element.value = value;
+}
+
+const setTextContent = (id, value) => {
+    const element = document.querySelector(id);
+    element.textContent = value;
 }

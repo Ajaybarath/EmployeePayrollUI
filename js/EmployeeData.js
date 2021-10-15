@@ -8,6 +8,7 @@ class EmployeePayrllData {
         this.profile = params[4];
         this.notes = params[5];
         this.startDate = params[6];
+        this.id = params[7];
     }
 
     set name(name) {
@@ -50,6 +51,14 @@ class EmployeePayrllData {
         this._salary = salary;
     }
 
+    set id(id) {
+        this._id = id;
+    }
+
+    get id() {
+        return this._id;
+    }
+
     get name() {
         return this._name;
     }
@@ -79,13 +88,14 @@ class EmployeePayrllData {
     }
 
     tostring() {
-        
+
         return "name= " + this.name + ", salary= " + this.salary + ", gender= " + this.gender + ", department=" + this.department + ", profile=" + this.profile + ", startDate= " + this.startDate;
     }
 
 }
 
 let isUpdate = false;
+let empIdToUpdate = 0;
 let employeePayrollObj = {};
 
 
@@ -101,17 +111,22 @@ const checkForUpdate = () => {
     if (!isUpdate) return;
 
     employeePayrollObj = JSON.parse(employeePayrollJson);
+    empIdToUpdate = employeePayrollObj._id;
     setForm();
 }
 
-save = () => {
+save = (event) => {
+
     let department = document.querySelector('input[name=department]:checked');
     if (department === null)
         alert("check any department")
     else {
         try {
-            let employeePayrllData = createEmployeePayroll();
-            createAndUpdateStorage(employeePayrllData);
+            setEmployeePayrollObject();
+            createAndUpdateStorage();
+            resetForm();
+            localStorage.removeItem('editEmp')
+            window.location.replace('../html/AppHomePage.html')
         }
         catch (e) {
             return;
@@ -119,6 +134,29 @@ save = () => {
 
     }
 }
+
+const setEmployeePayrollObject = () => {
+    let name = document.querySelector('#name').value;
+    let department = getSelectedValues('input[name=department]:checked');
+    let gender = document.querySelector('input[name="gender"]:checked').value;
+    let salary = document.querySelector('#salary').value;
+    let profile = document.querySelector('input[name="profile"]:checked').value;
+    let day = document.querySelector("#day").value
+    let month = document.querySelector("#month").value
+    let year = document.querySelector("#year").value
+    let notes = document.querySelector('#notes').value
+    let date = new Date(day + "-" + month + "-" + year)
+    let empId;
+    if (!isUpdate) 
+        empId = createNewEmployeeId();
+    else {
+        empId = empIdToUpdate;
+    }
+
+    employeePayrollObj = new EmployeePayrllData(name, salary, gender, department, profile, notes, date, empId);
+    console.log(employeePayrollObj)
+}
+
 
 const createEmployeePayroll = () => {
     let name = document.querySelector('#name').value;
@@ -161,17 +199,25 @@ const getSelectedValues = (propertyValue) => {
 }
 
 
-function createAndUpdateStorage(employeePayrllData) {
+function createAndUpdateStorage() {
     var employeePayrollList = JSON.parse(localStorage.getItem("EmployeePayrllList"));
-
-    if (employeePayrollList != undefined) {
-        employeePayrollList.push(employeePayrllData)
+    let empPayrollData;
+    if (employeePayrollList) {
+        empPayrollData = employeePayrollList.find(empDate => empDate._id == employeePayrollObj._id);
+        if (!empPayrollData) {
+            employeePayrollList.push(employeePayrollObj)
+        }
+        else {
+            const index = employeePayrollList.map(empData => empData._id)
+                .indexOf(empPayrollData._id);
+            employeePayrollList[index] = employeePayrollObj;
+        }
     }
     else {
-        employeePayrollList = [employeePayrllData]
+        employeePayrollList = [employeePayrollObj]
     }
 
-    alert(employeePayrllData.tostring())
+    alert(employeePayrollObj.tostring())
     localStorage.setItem("EmployeePayrllList", JSON.stringify(employeePayrollList))
     alert("saved successfully")
     resetForm();
@@ -235,3 +281,10 @@ const setTextContent = (id, value) => {
     element.textContent = value;
 }
 
+
+const createNewEmployeeId = () => {
+    let empId = localStorage.getItem("EmployeeId");
+    empId = !empId ? 1 : (empId + 1);
+    localStorage.setItem("EmployeeId", empId);
+    return empId;
+}

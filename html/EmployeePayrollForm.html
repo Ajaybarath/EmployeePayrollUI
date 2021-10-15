@@ -58,9 +58,9 @@
             <div class="row-content">
                 <label for="gender" class="label text">Gender</label>
                 <div>
-                    <input type="radio" id="male" name="gender" value="male" required>
+                    <input type="radio" id="male" name="gender" value="M" required>
                     <label for="male" class="text">Male</label>
-                    <input type="radio" id="female" name="gender" value="female">
+                    <input type="radio" id="female" name="gender" value="F">
                     <label for="female" class="text">Female</label>
                 </div>
             </div>
@@ -153,7 +153,7 @@
             <div class="buttonParent">
                 <a href="./home.html" class="resetButton button cancelButton"> Cancel</a>
                 <div class="submit-reset">
-                    <button class="button submitButton" id="submitButton" type="submit">Submit</button>
+                    <button class="button submitButton" id="submitButton" onclick="save(this); return false" type="submit">Submit</button>
                     <button class="button resetButton" type="reset" onclick="resetForm(); return false">Reset</button>
                 </div>
             </div>

@@ -33,8 +33,8 @@ const createInnerHtml = () => {
                 <td>${empPayrollData._salary}</td>
                 <td>${empPayrollData._startDate}</td>
                 <td class="action-content">
-                    <img src="../assets/icons/delete-black-18dp.svg" id="1" onclick="remove(this)" name="${empPayrollData._id}" alt="delete">
-                        <img src="../assets/icons/create-black-18dp.svg" id="2" onclick="update(empPayrollData)" name="${empPayrollData._id}" alt="delete">
+                    <img src="../assets/icons/delete-black-18dp.svg" id="1" onclick="remove(this)" name="${empPayrollData._name}" alt="delete">
+                        <img src="../assets/icons/create-black-18dp.svg" id="2" onclick="update(this)" name="${empPayrollData._name}" alt="delete">
                         </td>
             </tr>`;
 
@@ -109,7 +109,7 @@ const createEmployeePayrollJson = () => {
 
 
 const remove = (node) => {
-    let empPayrollData = empPayrollList.find(empData => empData._name == node._name);
+    let empPayrollData = empPayrollList.find(empData => empData._name == node.name);
     if (!empPayrollData) return;
 
     const index = empPayrollList.map(empData => empData._id)
@@ -118,4 +118,21 @@ const remove = (node) => {
     empPayrollList.splice(index, 1);
     localStorage.setItem("EmployeePayrllList", JSON.stringify(empPayrollList));
     createInnerHtml();
+}
+
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    empPayrollList = getEmployeeDataFromLocalStorage();
+    createInnerHtml();
+    localStorage.removeItem('editEmp');
+})
+
+
+const update = (node) => {
+    let empPayrollData = empPayrollList.find(empData => empData._name == node.name);
+    if (!empPayrollData) return;
+
+    localStorage.setItem('editEmp', JSON.stringify(empPayrollData))
+    window.location.replace("../html/EmployeePayrollForm.html")
+
 }

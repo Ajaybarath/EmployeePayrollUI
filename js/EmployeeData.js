@@ -26,7 +26,7 @@ class EmployeePayrllData {
         else {
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
-            this._startDate = startDate.toLocaleDateString("en-US", options);
+            this._startDate = new Date(Date.parse(startDate)).toLocaleDateString("en-GB", options);
         }
     }
 
@@ -85,8 +85,24 @@ class EmployeePayrllData {
 
 }
 
+let isUpdate = false;
+let employeePayrollObj = {};
+
 
 let employeePayrllDataArr = new Array();
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    checkForUpdate();
+})
+
+const checkForUpdate = () => {
+    const employeePayrollJson = localStorage.getItem('editEmp');
+    isUpdate = employeePayrollJson ? true : false;
+    if (!isUpdate) return;
+
+    employeePayrollObj = JSON.parse(employeePayrollJson);
+    setForm();
+}
 
 save = () => {
     let department = document.querySelector('input[name=department]:checked');
@@ -161,6 +177,20 @@ function createAndUpdateStorage(employeePayrllData) {
     resetForm();
 }
 
+const setForm = () => {
+    setValue('#name', employeePayrollObj._name);
+    setSelectedValues('[name=profile]', employeePayrollObj._profile)
+    setSelectedValues('[name=gender]', employeePayrollObj._gender)
+    setSelectedValues('[name=department]', employeePayrollObj._department)
+    setValue('#salary', employeePayrollObj._salary);
+    setTextContent('.salary-output', employeePayrollObj._salary);
+    setValue('#notes', employeePayrollObj._notes);
+    let date = employeePayrollObj._startDate.split(" ");
+    setValue('#day', date[0]);
+    setValue('#month', date[1]);
+    setValue('#year', date[2]);
+}
+
 const resetForm = () => {
     setValue('#name', '');
     unsetSelectedValues('[name=profile]')
@@ -171,7 +201,21 @@ const resetForm = () => {
     setValue('#notes', '');
     setValue('#day', '1');
     setValue('#month', 'January');
-    setValue('#year', '2020');
+    setValue('#year', '2021');
+}
+
+const setSelectedValues = (propertyValue, value) => {
+    let allItem = document.querySelectorAll(propertyValue)
+    allItem.forEach(item => {
+        if (Array.isArray(value)) {
+            if (value.includes(item.value)) {
+                item.checked = true;
+            }
+        }
+        else if (item.value === value) {
+            item.checked = true;
+        }
+    })
 }
 
 const unsetSelectedValues = (propertyValue) => {
@@ -190,3 +234,4 @@ const setTextContent = (id, value) => {
     const element = document.querySelector(id);
     element.textContent = value;
 }
+

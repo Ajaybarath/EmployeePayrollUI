@@ -34,7 +34,7 @@ const createInnerHtml = () => {
                 <td>${empPayrollData._startDate}</td>
                 <td class="action-content">
                     <img src="../assets/icons/delete-black-18dp.svg" id="1" onclick="remove(this)" name="${empPayrollData._id}" alt="delete">
-                        <img src="../assets/icons/create-black-18dp.svg" id="2" onclick="update(this)" name="${empPayrollData._id}" alt="delete">
+                        <img src="../assets/icons/create-black-18dp.svg" id="2" onclick="update(empPayrollData)" name="${empPayrollData._id}" alt="delete">
                         </td>
             </tr>`;
 
@@ -104,4 +104,18 @@ const createEmployeePayrollJson = () => {
     ];
 
     return empPayrollListLocal;
+}
+
+
+
+const remove = (node) => {
+    let empPayrollData = empPayrollList.find(empData => empData._name == node._name);
+    if (!empPayrollData) return;
+
+    const index = empPayrollList.map(empData => empData._id)
+        .indexOf(empPayrollData._id);
+
+    empPayrollList.splice(index, 1);
+    localStorage.setItem("EmployeePayrllList", JSON.stringify(empPayrollList));
+    createInnerHtml();
 }

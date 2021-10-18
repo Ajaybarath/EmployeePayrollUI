@@ -1,11 +1,39 @@
 let empPayrollList;
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    empPayrollList = getEmployeeDataFromLocalStorage();
+    getEmployeeDataFromServer();
     // document.querySelector(".emp-count").textContent = empPayrollList.length;
-    createInnerHtml();
     console.log("content loaded")
 })
+
+const getEmployeeDataFromServer = ()=> {
+    let getURL = "http://localhost:3000/employee/";
+    makePromiseCall("GET", getURL, true)
+    .then(responseText => {
+        console.log("Get user data: " + responseText)
+        empPayrollList = JSON.parse(responseText)
+        createInnerHtml();
+
+    })
+    .catch(error => {
+        console.log("Get Error status: " + JSON.stringify(error))
+        empPayrollList = [{
+            "name": "test",
+            "gender": "male",
+            "departMent": [
+              "HR"
+            ],
+            "salary": "30000",
+            "startDate": "1 Jan 2020",
+            "notes": "",
+            "id": 1604589731061,
+            "profileUrl": "../assets/profile-images/Ellipse -3.png"
+          }];
+          createInnerHtml();
+
+    })
+
+}
 
 const getEmployeeDataFromLocalStorage = () => {
     return localStorage.getItem('EmployeePayrllList') ? JSON.parse(localStorage.getItem('EmployeePayrllList')) : [];
@@ -23,18 +51,18 @@ const createInnerHtml = () => {
         innerHtml = ` ${innerHtml}
             <tr>
                 <td>
-                    <img src="${empPayrollData._profile}" alt="" class="profile">
+                    <img src="${empPayrollData.profile}" alt="" class="profile">
                 </td>
-                <td>${empPayrollData._name} </td>
-                <td>${empPayrollData._gender}</td>
+                <td>${empPayrollData.name} </td>
+                <td>${empPayrollData.gender}</td>
                 <td>
-                    ${getDepartmentHtml(empPayrollData._department)}
+                    ${getDepartmentHtml(empPayrollData.departMent)}
                 </td>
-                <td>${empPayrollData._salary}</td>
-                <td>${empPayrollData._startDate}</td>
+                <td>${empPayrollData.salary}</td>
+                <td>${empPayrollData.startDate}</td>
                 <td class="action-content">
-                    <img src="../assets/icons/delete-black-18dp.svg" id="1" onclick="remove(this)" name="${empPayrollData._id}" alt="delete">
-                        <img src="../assets/icons/create-black-18dp.svg" id="2" onclick="update(this)" name="${empPayrollData._id}" alt="delete">
+                    <img src="../assets/icons/delete-black-18dp.svg" id="1" onclick="remove(this)" name="${empPayrollData.id}" alt="delete">
+                        <img src="../assets/icons/create-black-18dp.svg" id="2" onclick="update(this)" name="${empPayrollData.id}" alt="delete">
                         </td>
             </tr>`;
 
@@ -108,16 +136,40 @@ const createEmployeePayrollJson = () => {
 
 
 
+// const remove = (node) => {
+//     let empPayrollData = empPayrollList.find(empData => empData._id == node.name);
+//     if (!empPayrollData) return;
+
+//     const index = empPayrollList.map(empData => empData._id)
+//         .indexOf(empPayrollData._id);
+
+//     empPayrollList.splice(index, 1);
+//     localStorage.setItem("EmployeePayrllList", JSON.stringify(empPayrollList));
+//     createInnerHtml();
+// }
+
 const remove = (node) => {
-    let empPayrollData = empPayrollList.find(empData => empData._id == node.name);
+    let empPayrollData = empPayrollList.find(empData => empData.id == node.name);
     if (!empPayrollData) return;
 
     const index = empPayrollList.map(empData => empData._id)
         .indexOf(empPayrollData._id);
 
     empPayrollList.splice(index, 1);
-    localStorage.setItem("EmployeePayrllList", JSON.stringify(empPayrollList));
-    createInnerHtml();
+
+    let deleteURL = "http://localhost:3000/employee/" + node.name;
+    makePromiseCall("DELETE", deleteURL, false)
+    .then(responseText => {
+        console.log("User deleted: " + responseText + " id: " + node.name)
+        createInnerHtml()
+
+    })
+    .catch(error => {
+        console.log("Delete Error status: " + JSON.stringify(error))
+        createInnerHtml()
+
+    })
+    
 }
 
 

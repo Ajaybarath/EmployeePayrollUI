@@ -94,6 +94,7 @@ class EmployeePayrllData {
 
 }
 
+
 let isUpdate = false;
 let empIdToUpdate = 0;
 let employeePayrollObj = {};
@@ -111,7 +112,7 @@ const checkForUpdate = () => {
     if (!isUpdate) return;
 
     employeePayrollObj = JSON.parse(employeePayrollJson);
-    empIdToUpdate = employeePayrollObj._id;
+    empIdToUpdate = employeePayrollObj.id;
     setForm();
 }
 
@@ -123,16 +124,48 @@ save = (event) => {
     else {
         try {
             setEmployeePayrollObject();
-            createAndUpdateStorage();
-            resetForm();
-            localStorage.removeItem('editEmp')
-            window.location.replace('../html/AppHomePage.html')
+
+            if (siteProperties.use_local_storage == false) {
+                createAndUpdateStorage();
+                resetForm();
+                localStorage.removeItem('editEmp')
+                window.location.replace('../html/AppHomePage.html')
+            }
+            else {
+                createOrUpdateEmployeePayroll();
+            }
         }
         catch (e) {
             return;
         }
 
     }
+}
+
+const createOrUpdateEmployeePayroll = () => {
+
+    let postUrl = "http://localhost:3000/employee/";
+    let methodCall = "POST"
+    if (isUpdate) {
+        methodCall = "PUT";
+        postUrl = "http://localhost:3000/employee/" + employeePayrollObj.id;
+    }
+
+    makePromiseCall(methodCall, postUrl, false, employeePayrollObj)
+        .then(responseText => {
+            console.log("Get user data: " + responseText)
+            alert(employeePayrollObj.tostring())
+            alert("saved successfully")
+            resetForm();
+            localStorage.removeItem('editEmp')
+            window.location.replace('../html/AppHomePage.html')
+
+        })
+        .catch(error => {
+            throw error;
+
+        })
+
 }
 
 const setEmployeePayrollObject = () => {
@@ -147,9 +180,7 @@ const setEmployeePayrollObject = () => {
     let notes = document.querySelector('#notes').value
     let date = new Date(day + "-" + month + "-" + year)
     let empId;
-    if (!isUpdate) 
-        empId = createNewEmployeeId();
-    else {
+    if (isUpdate)  {
         empId = empIdToUpdate;
     }
 
